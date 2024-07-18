@@ -104,7 +104,8 @@ async function startSlideShow(root) {
         for (const child of root.children) {
             childrenWidth += parseInt(child.dataset.realWidth)
         }
-        let slides = await slidesFetcher(root.offsetWidth - (childrenWidth - removedWidth), root.offsetHeight)
+        let usedWidth = childrenWidth - removedWidth;
+        let slides = await slidesFetcher(root.offsetWidth - usedWidth, root.offsetHeight, usedWidth < 50)
         for (const slide of slides) {
             if (slide.format == 'video') {
                 let vidDiv = document.createElement("video")

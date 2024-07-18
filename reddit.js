@@ -14,7 +14,7 @@ export async function startReddit() {
     }
     const sort = document.getElementById("redditSort").value;
     const time = document.getElementById("redditTime").value
-    baseUrl = "https://www.reddit.com/r/"
+    baseUrl = "https://old.reddit.com/r/"
     baseUrl += subreddits.join("+") + "/"
     baseUrl += sort + "/"
     baseUrl += ".json"
@@ -94,7 +94,7 @@ function scaleWidth(fitHeight, height, width) {
     return width * scaleFactor
 }
 
-export async function nextRedditSlides(remainingWidth, height) {
+export async function nextRedditSlides(remainingWidth, height, isEmpty) {
     let toAdd = [];
     let newRemainingWidth = remainingWidth;
     let indicesToRemove = [];
@@ -106,6 +106,13 @@ export async function nextRedditSlides(remainingWidth, height) {
             indicesToRemove.push(i)
             newRemainingWidth -= scaledWidth
         }
+    }
+    if (isEmpty && toAdd.length === 0) {
+        let scaledHeight = scaleWidth(remainingWidth, redditFiles[0].width, redditFiles[0].height)
+        let scaledWidth = scaleWidth(scaledHeight, redditFiles[0].height, redditFiles[0].width)
+        redditFiles[0].scaledWidth = scaledWidth;
+        toAdd.push(redditFiles[0])
+        indicesToRemove.push(0)
     }
     for (const i of indicesToRemove.reverse()) {
         redditFiles.splice(i, 1)
@@ -151,7 +158,7 @@ function setSelectValue(selectElement, value) {
         if (child.value == value) {
             child.setAttribute("selected", "selected")
         } else {
-            child.setAttribute("selected", null)
+            child.removeAttribute("selected")
         }
     }
 }
@@ -169,6 +176,7 @@ function profileChanged(event) {
         setSelectValue(document.getElementById("redditSort"), profile.sort)
         changeSort()
         setSelectValue(document.getElementById("redditTime"), profile.time)
+        pickedSubreddits.innerHTML = ""
         profile.subreddits.forEach(addSubredditValue)
     }
 }
