@@ -214,3 +214,33 @@ a {
     font-size: 25px;
     width: 100%;
 }
+
+
+
+@media (orientation: portrait) and (max-width: 1000px) {
+    .browse {
+        font-size: 50px;
+    }
+    #settingsDialog {
+        width: 90%;
+    }
+    input, button, body {
+        font-size: 30px;
+    }
+    
+    .settingsRow.sub span:first-of-type {
+        width: 120px;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 1000px) {
+
+    #ahegao-left {
+        width: 240px;
+    }
+
+    #ahegao-right {
+        width: 200px;
+    }
+
+}
